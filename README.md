@@ -46,3 +46,27 @@ Role-Based Access Control (RBAC): Middleware enforces permissions. Viewers canno
 
 Aggregation Endpoints: Dashboard summaries are calculated efficiently at the database level using Prisma aggregations.
 
+## FLOW
+
+```mermaid
+graph TD
+    Client[Client / Swagger UI] -->|HTTP Request| Router[Express Router]
+    
+    subgraph Security Layer
+        Router --> Zod[Zod Validation]
+        Zod --> Auth[JWT Auth Middleware]
+        Auth --> RBAC[Role-Based Access Control]
+    end
+    
+    subgraph Application Layer
+        RBAC -->|Authorized| Controllers[Controllers: HTTP Transport]
+        Controllers --> Services[Services: Business Logic]
+    end
+    
+    subgraph Data Layer
+        Services --> Prisma[Prisma ORM]
+        Prisma --> DB[(SQLite Database)]
+    end
+    
+    RBAC -.->|Unauthorized| Reject[401/403 Error]
+    Zod -.->|Bad Input| Error[400 Bad Request]
