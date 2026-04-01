@@ -4,6 +4,8 @@ info:
   version: 1.0.0
   description: Backend API for managing financial records and dashboard analytics.
 servers:
+  - url: https://zorvyn-finance-dashboard-api.onrender.com
+    description: Production Server
   - url: http://localhost:3000
     description: Local development server
 components:
